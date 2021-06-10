@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 const crawWurm = {
     artist: "Richard Sardinha",
     cmc: 6,
@@ -52,9 +54,14 @@ const crawWurm = {
     types: ["Sorcery"]
   };
   
-  export async function fetchCards(terms) {
-    return [
-      crawWurm,
-      demolish
-    ];
+  export async function fetchCards({ name, text }) {
+    try {
+      const { data } = await axios.get(
+        `https://api.magicthegathering.io/v1/cards?name=${ name }&text=${ text }`
+      );
+  
+      return data.cards || [];
+    } catch (error) {
+      throw error;
+    }
   }
